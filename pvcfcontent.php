@@ -190,8 +190,6 @@ class plgContentPvcfcontent extends JPlugin
 
         while (preg_match($search, $text, $regs, PREG_OFFSET_CAPTURE)) {
             $matches = explode('|', trim(trim($regs[0][0], '[]'), '[]'));
-            jimport('kint.kint');
-            d($matches);
             $mock = array(1=>
                 array(
                     'entity'=>'Maria Quiñones-Sánchez 7<sup>th</sup> District', 
@@ -301,5 +299,4 @@ class plgContentPvcfcontent extends JPlugin
 
         return '<p><a href="' . $row['url'] . '" target="_blank">' . $row['entity'] . '</a>' . $flags . '</p>';
     }
-
 }
