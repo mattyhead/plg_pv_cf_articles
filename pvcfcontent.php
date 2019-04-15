@@ -267,6 +267,7 @@ class plgContentPvcfcontent extends JPlugin
         foreach ($rows as $key => $row) {
             $content .= $this->getReportLine($row);
         }
+        return $content;
     }
 
     public function getReportLine($row) {
