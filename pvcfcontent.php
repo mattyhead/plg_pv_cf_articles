@@ -190,7 +190,8 @@ class plgContentPvcfcontent extends JPlugin
 
         while (preg_match($search, $text, $regs, PREG_OFFSET_CAPTURE)) {
             $temp = explode('|', trim(trim($regs[0][0], '[]'), '[]'));
-
+            jimport('kint.kint');
+            d($temp);
 
             $mock = 
                 array(
@@ -225,14 +226,13 @@ class plgContentPvcfcontent extends JPlugin
         } else if ($source == 'paper') {
             $content = '<h4>Paper filing:</h4>';
         }
-        jimport( 'kint.kint' ); 
         $old_reporttype = '';
         foreach ($rows as $key => $row) {
-d($row, $old_reporttype);
+            // we're assuming the data is sorted by reporttype here
             if ($row['reporttype'] == $old_reporttype) {
                 // no header
             } else {
-                $content.="<h4>" . $row['reporttype'] . "</h4>";
+                $content.="<h5>" . $row['reporttype'] . "</h5>";
             }
             $content .= $this->getReportLine($row);
         }
