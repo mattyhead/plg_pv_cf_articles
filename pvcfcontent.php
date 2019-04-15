@@ -197,7 +197,7 @@ class plgContentPvcfcontent extends JPlugin
                     'entity'=>'Maria Quiñones-Sánchez 7<sup>th</sup> District', 
                     'url'=>'https://pdfgen.phila.gov/pdf/5c3e30919006b/2002?aid=Y1B0L0haQ29MdDFxQ1F1WnVrdUNjQmNhelFsWkFoTGNRQ0dwSXM1S1Vmbz0=',
                     'committee'=>1,
-                    'amended'=>,
+                    'amended'=>'',
                     'termination'=>0,'
                     reporttype'=>'District Council',
                 );
