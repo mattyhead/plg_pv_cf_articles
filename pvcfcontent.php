@@ -202,7 +202,7 @@ class plgContentPvcfcontent extends JPlugin
                     'reporttype'=>'District Council',
                 );
             // default failure
-            $text = JString::str_ireplace($regs[0][0], "<pre>" . $this->getReportLine($mock,true) . "</pre>", $text);
+            $text = JString::str_ireplace($regs[0][0], "" . $this->getReportLine($mock,true) . "", $text);
 //            $text = JString::str_ireplace($regs[0][0], "<div class=\"error\">This file doesn't exist. Nothing to see here.</div>", $text);
         }
         return true;
