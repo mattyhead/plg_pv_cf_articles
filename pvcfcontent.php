@@ -202,7 +202,7 @@ class plgContentPvcfcontent extends JPlugin
                     'reporttype'=>'District Council',
                 );
             // default failure
-            $text = JString::str_ireplace($regs[0][0], "" . $this->getReportLine($mock,true) . "", $text);
+            $text = JString::str_ireplace($regs[0][0], "" . $this->getFullDisplay(array($mock),'online') . "", $text);
 //            $text = JString::str_ireplace($regs[0][0], "<div class=\"error\">This file doesn't exist. Nothing to see here.</div>", $text);
         }
         return true;
@@ -225,8 +225,13 @@ class plgContentPvcfcontent extends JPlugin
         } else if ($source == 'paper') {
             $content = '<h4>Paper filing:</h4>';
         }
-
+        $old_reporttype = ''
         foreach ($rows as $key => $row) {
+            if ($row['reporttype'] == $old_reporttype) {
+                // no header
+            } else {
+                $content.="<h4>" . $row['reporttype'] . "</h4>";
+            }
             $content .= $this->getReportLine($row, true);
         }
     }
@@ -242,7 +247,7 @@ class plgContentPvcfcontent extends JPlugin
         }
     }
 
-    public function getReportLine($row, $show_reporttype) {
+    public function getReportLine($row) {
         // build 'flags' content
         if ($row['committee'] || $row['amended'] || $row['termination']) {
             $flags=' (';
@@ -266,7 +271,7 @@ class plgContentPvcfcontent extends JPlugin
             $flags.=')';
         }
 
-        return '<p><a href="' . $row['url'] . '" target="_blank">' . $row['entity'] . '</a>' . ($show_reporttype ? ' - ' . $row['reporttype'] : '') . $flags . '</p>';
+        return '<p><a href="' . $row['url'] . '" target="_blank">' . $row['entity'] . '</a>' . $flags . '</p>';
     }
 
 }
