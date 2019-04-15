@@ -225,9 +225,10 @@ class plgContentPvcfcontent extends JPlugin
         } else if ($source == 'paper') {
             $content = '<h4>Paper filing:</h4>';
         }
-        jimport( 'kint.kint' ); d($rows);
+        jimport( 'kint.kint' ); 
         $old_reporttype = '';
         foreach ($rows as $key => $row) {
+d($row, $old_reporttype);
             if ($row['reporttype'] == $old_reporttype) {
                 // no header
             } else {
