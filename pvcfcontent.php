@@ -202,7 +202,7 @@ class plgContentPvcfcontent extends JPlugin
                     reporttype'=>'District Council',
                 );
             // default failure
-            $text = JString::str_ireplace($regs[0][0], "<pre>" . getReportLine($mock,true) . "</pre>", $text);
+            $text = JString::str_ireplace($regs[0][0], "<pre>" . $this->getReportLine($mock,true) . "</pre>", $text);
 //            $text = JString::str_ireplace($regs[0][0], "<div class=\"error\">This file doesn't exist. Nothing to see here.</div>", $text);
         }
         return true;
@@ -227,7 +227,7 @@ class plgContentPvcfcontent extends JPlugin
         }
 
         foreach ($rows as $key => $row) {
-            $content .= getReportLine($row, true);
+            $content .= $this->getReportLine($row, true);
         }
     }
 
@@ -238,7 +238,7 @@ class plgContentPvcfcontent extends JPlugin
             $content = '<h4>Paper filing:</h4>';
         }
         foreach ($rows as $key => $row) {
-            $content .= getReportLine($row, false);
+            $content .= $this->getReportLine($row, false);
         }
     }
 
