@@ -244,7 +244,7 @@ class plgContentPvcfcontent extends JPlugin
 
     public function getReportLine($row, $show_reporttype) {
         // build 'flags' content
-        if ($row['committee'] && $row['amended'] && $row['termination']) {
+        if ($row['committee'] || $row['amended'] || $row['termination']) {
             $flags=' (';
             if ($row['committee']) {
                 $flagged=1;
