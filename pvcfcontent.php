@@ -234,8 +234,9 @@ d($row, $old_reporttype);
             } else {
                 $content.="<h4>" . $row['reporttype'] . "</h4>";
             }
-            $content .= $this->getReportLine($row, true);
+            $content .= $this->getReportLine($row);
         }
+        return $content;
     }
 
     public function getReportypeDisplay($rows, $source) {
@@ -245,7 +246,7 @@ d($row, $old_reporttype);
             $content = '<h4>Paper filing:</h4>';
         }
         foreach ($rows as $key => $row) {
-            $content .= $this->getReportLine($row, false);
+            $content .= $this->getReportLine($row);
         }
     }
 
