@@ -212,18 +212,19 @@ class plgContentPvcfcontent extends JPlugin
             );
 
             if ($matches[3]) {
+                // GET SOME DATA
                 $text = JString::str_ireplace($regs[0][0], "" . $this->getReportypeDisplay($mock, 'online') . "", $text);
                 return true;
             }
 
             if ($matches[2]) {
+                // GET SOME DATA
                 $text = JString::str_ireplace($regs[0][0], "" . $this->getFullDisplay($mock, 'paper') . "", $text);
                 return true;
             }
 
-            // default failure
-            $text = JString::str_ireplace($regs[0][0], "" . $this->getFullDisplay(array(1=>$mock),'online') . "", $text);
-//            $text = JString::str_ireplace($regs[0][0], "<div class=\"error\">This file doesn't exist. Nothing to see here.</div>", $text);
+            // Woops.  Didn't find enough to get results.
+            $text = JString::str_ireplace($regs[0][0], "<div class=\"error\">Usage: [[PVCFCONTENT|YEAR|CYCLE|OFFICE/ENTITYTYPE(OPTIONAL)]].</div>", $text);
         }
         return true;
     }
