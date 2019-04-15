@@ -1,7 +1,7 @@
 <?php
 /**
  * @version     $Id: pvcfcontent.php
- * @package     PVotes
+ * @package     PVotes 
  * @subpackage  Content
  * @copyright   Copyright (C) 2015 Philadelphia Elections Commission
  * @license     GNU/GPL, see LICENSE.php
