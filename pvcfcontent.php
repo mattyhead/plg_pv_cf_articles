@@ -191,14 +191,12 @@ class plgContentPvcfcontent extends JPlugin
         while (preg_match($search, $text, $regs, PREG_OFFSET_CAPTURE)) {
             $temp = explode('|', trim(trim($regs[0][0], '[]'), '[]'));
 
-            // Let's make sure it's not a remote file
-            if (in_array($file_array[0], array('http','https','ftp','file'))) {
-                $text = JString::str_ireplace($regs[0][0], "<div class=\"info\">This is a link to a remote file.  Please download the PDF to view it: <a href=\"$file_path\" target=\"_blank\">Download PDF</a></div>", $text);
-                return true;                
-            }
+
 
             // default failure
-            $text = JString::str_ireplace($regs[0][0], "<div class=\"error\">This file doesn't exist. Nothing to see here.</div>", $text);
+            $text = JString::str_ireplace($regs[0][0], "<pre>" . getReportLine((object)array('entity'=>'Maria Quiñones-Sánchez 7<sup>th</sup> District
+', 'url'=>'https://pdfgen.phila.gov/pdf/5c3e30919006b/2002?aid=Y1B0L0haQ29MdDFxQ1F1WnVrdUNjQmNhelFsWkFoTGNRQ0dwSXM1S1Vmbz0=','committee'=>1,'amended'=>,'termination'=>0,'reporttype'=>'District Council'),true) . "</pre>", $text);
+//            $text = JString::str_ireplace($regs[0][0], "<div class=\"error\">This file doesn't exist. Nothing to see here.</div>", $text);
         }
         return true;
     }
