@@ -189,11 +189,10 @@ class plgContentPvcfcontent extends JPlugin
         $search = "(\[\[PVCFCONTENT|.*\]\])";
 
         while (preg_match($search, $text, $regs, PREG_OFFSET_CAPTURE)) {
-            $temp = explode('|', trim(trim($regs[0][0], '[]'), '[]'));
+            $matches = explode('|', trim(trim($regs[0][0], '[]'), '[]'));
             jimport('kint.kint');
-            d($temp);
-
-            $mock = 
+            d($matches);
+            $mock = array(1=>
                 array(
                     'entity'=>'Maria Quiñones-Sánchez 7<sup>th</sup> District', 
                     'url'=>'https://pdfgen.phila.gov/pdf/5c3e30919006b/2002?aid=Y1B0L0haQ29MdDFxQ1F1WnVrdUNjQmNhelFsWkFoTGNRQ0dwSXM1S1Vmbz0=',
@@ -201,7 +200,27 @@ class plgContentPvcfcontent extends JPlugin
                     'amended'=>'',
                     'termination'=>0,
                     'reporttype'=>'District Council',
-                );
+                ),
+                array(
+                    'entity'=>'Some Guy', 
+                    'url'=>'https://pdfgen.phila.gov/pdf/5c3e30919006b/2002?aid=Y1B0L0haQ29MdDFxQ1F1WnVrdUNjQmNhelFsWkFoTGNRQ0dwSXM1S1Vmbz0=',
+                    'committee'=>1,
+                    'amended'=>1,
+                    'termination'=>1,
+                    'reporttype'=>'Mayor',
+                ),
+            );
+
+            if ($matches[3]) {
+                $text = JString::str_ireplace($regs[0][0], "" . $this->getReportypeDisplay($mock, 'online') . "", $text);
+                return true;
+            }
+
+            if ($matches[2]) {
+                $text = JString::str_ireplace($regs[0][0], "" . $this->getFullDisplay($mock, 'paper') . "", $text);
+                return true;
+            }
+
             // default failure
             $text = JString::str_ireplace($regs[0][0], "" . $this->getFullDisplay(array(1=>$mock),'online') . "", $text);
 //            $text = JString::str_ireplace($regs[0][0], "<div class=\"error\">This file doesn't exist. Nothing to see here.</div>", $text);
