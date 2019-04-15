@@ -213,12 +213,16 @@ class plgContentPvcfcontent extends JPlugin
 
             if ($matches[3]) {
                 // GET SOME DATA
+
+                // shape data
                 $text = JString::str_ireplace($regs[0][0], "" . $this->getReportypeDisplay($mock, 'online') . "", $text);
                 return true;
             }
 
             if ($matches[2]) {
                 // GET SOME DATA
+
+                // shape data
                 $text = JString::str_ireplace($regs[0][0], "" . $this->getFullDisplay($mock, 'paper') . "", $text);
                 return true;
             }
