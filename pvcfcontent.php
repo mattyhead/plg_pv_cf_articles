@@ -1,0 +1,267 @@
+<?php
+/**
+ * @version     $Id: pvcfcontent.php
+ * @package     PVotes
+ * @subpackage  Content
+ * @copyright   Copyright (C) 2015 Philadelphia Elections Commission
+ * @license     GNU/GPL, see LICENSE.php
+ * @author      Matthew Murphy <matthew.e.murphy@phila.gov>
+ */
+
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
+
+/**
+ * Example Content Plugin
+ *
+ * @package     Joomla
+ * @subpackage  Content
+ * @since       1.5
+ */
+class plgContentPvcfcontent extends JPlugin
+{
+
+    /**
+     * Constructor
+     *
+     * @param object $subject The object to observe
+     * @param object $params  The object that holds the plugin parameters
+     * @since 1.5
+     */
+    public function __construct(&$subject, $params)
+    {
+        parent::__construct($subject, $params);
+    }
+
+    /**
+     * Default event
+     *
+     * Isolate the content and call actual processor
+     *
+     * @param   object      The article object.  Note $article->text is also available
+     * @param   object      The article params
+     * @param   int         The 'page' number
+     */
+    public function onPrepareContent(&$article, &$params, $limitstart)
+    {
+        global $mainframe;
+        if (is_object($article)) {
+            return $this->getPvcfcontentDisplay($article->text);
+        }
+        return $this->getPvcfcontentDisplay($article);
+    }
+
+    /**
+     * Example after display title method
+     *
+     * Method is called by the view and the results are imploded and displayed in a placeholder
+     *
+     * @param   object   $article   The article object.  Note $article->text is also available
+     * @param   object   $params   The article params
+     * @param   int      $limitstart   The 'page' number
+     * @return  string
+     */
+    public function onAfterDisplayTitle(&$article, &$params, $limitstart)
+    {
+        global $mainframe;
+
+        return '';
+    }
+
+    /**
+     * Example before display content method
+     *
+     * Method is called by the view and the results are imploded and displayed in a placeholder
+     *
+     * @param   object   $article   The article object.  Note $article->text is also available
+     * @param   object   $params   The article params
+     * @param   int      $limitstart   The 'page' number
+     * @return  string
+     */
+    public function onBeforeDisplayContent(&$article, &$params, $limitstart)
+    {
+        global $mainframe;
+
+        return '';
+    }
+
+    /**
+     * Example after display content method
+     *
+     * Method is called by the view and the results are imploded and displayed in a placeholder
+     *
+     * @param   object   $article   The article object.  Note $article->text is also available
+     * @param   object   $params   The article params
+     * @param   int      $limitstart   The 'page' number
+     * @return  string
+     */
+    public function onAfterDisplayContent(&$article, &$params, $limitstart)
+    {
+        global $mainframe;
+
+        return '';
+    }
+
+    /**
+     * Example before save content method
+     *
+     * Method is called right before content is saved into the database.
+     * Article object is passed by reference, so any changes will be saved!
+     * NOTE:  Returning false will abort the save with an error.
+     *  You can set the error by calling $article->setError($message)
+     *
+     * @param   object   $article   A JTableContent object
+     * @param   bool     $isNew   If the content is just about to be created
+     * @return  bool        If false, abort the save
+     */
+    public function onBeforeContentSave(&$article, $isNew)
+    {
+        global $mainframe;
+
+        return true;
+    }
+
+    /**
+     * Example after save content method
+     * Article is passed by reference, but after the save, so no changes will be saved.
+     * Method is called right after the content is saved
+     *
+     *
+     * @param   object   $article   A JTableContent object
+     * @param   bool     $isNew   If the content is just about to be created
+     * @return  void
+     */
+    public function onAfterContentSave(&$article, $isNew)
+    {
+        global $mainframe;
+
+        return true;
+    }
+
+    /**
+     * Check for a Pvcfcontent block,
+     * skip <script> blocks, and
+     * call getPvcfcontentStrings() as appropriate.
+     *
+     * @param   string   $text  content
+     * @return  bool
+     */
+    public function getPvcfcontentDisplay(&$text)
+    {
+        // Quick, cheap chance to back out.
+        if (JString::strpos($text, 'PVCFCONTENT') === false) {
+            return true;
+        }
+
+        $text = explode('<script', $text);
+        foreach ($text as $i => $str) {
+            if ($i == 0) {
+                $this->getPvcfcontentStrings($text[$i]);
+            } else {
+                $str_split = explode('</script>', $str);
+                foreach ($str_split as $j => $str_split_part) {
+                    if (($j % 2) == 1) {
+                        $this->getPvcfcontentStrings($str_split[$i]);
+                    }
+                }
+                $text[$i] = implode('</script>', $str_split);
+            }
+        }
+        $text = implode('<script', $text);
+
+        return true;
+    }
+
+    /**
+     * Find Pvcfcontent blocks,
+     * get display per block.
+     *
+     * @param   string   $text  content
+     * @return  bool
+     */
+    public function getPvcfcontentStrings(&$text)
+    {
+        // Quick, cheap chance to back out.
+        if (JString::strpos($text, 'PVCFCONTENT') === false) {
+            return true;
+        }
+
+        $search = "(\[\[PVCFCONTENT|.*\]\])";
+
+        while (preg_match($search, $text, $regs, PREG_OFFSET_CAPTURE)) {
+            $temp = explode('|', trim(trim($regs[0][0], '[]'), '[]'));
+
+            // Let's make sure it's not a remote file
+            if (in_array($file_array[0], array('http','https','ftp','file'))) {
+                $text = JString::str_ireplace($regs[0][0], "<div class=\"info\">This is a link to a remote file.  Please download the PDF to view it: <a href=\"$file_path\" target=\"_blank\">Download PDF</a></div>", $text);
+                return true;                
+            }
+
+            // default failure
+            $text = JString::str_ireplace($regs[0][0], "<div class=\"error\">This file doesn't exist. Nothing to see here.</div>", $text);
+        }
+        return true;
+    }
+
+    /**
+     * Get HTML content,
+     *
+     * @param   $file_Path
+     * @return  string
+     */
+    public function getHTMLContent($file_path)
+    {
+        return "<h2>HTML CONTENT</h2>";
+    }
+
+    public function getFullDisplay($rows, $source) {
+        if ($source == 'online') {
+            $content = '<h4>Filed Online (<a href="https://apps.phila.gov/campaign-finance/search/contributions" target="_blank">Search here</a>):</h4>';
+        } else if ($source == 'paper') {
+            $content = '<h4>Paper filing:</h4>';
+        }
+
+        foreach ($rows as $key => $row) {
+            $content .= getReportLine($row, true);
+        }
+    }
+
+    public function getReportypeDisplay($rows, $source) {
+        if ($source == 'online') {
+            $content = '<h4>Filed Online (<a href="https://apps.phila.gov/campaign-finance/search/contributions" target="_blank">Search here</a>):</h4>';
+        } else if ($source == 'paper') {
+            $content = '<h4>Paper filing:</h4>';
+        }
+        foreach ($rows as $key => $row) {
+            $content .= getReportLine($row, false);
+        }
+    }
+
+    public function getReportLine($row, $show_reporttype) {
+        // build 'flags' content
+        if ($row['committee'] && $row['amended'] && $row['termination']) {
+            $flags=' (';
+            if ($row['committee']) {
+                $flagged=1;
+                $flags.='committee';
+            }
+            if ($row['amended']) {
+                if ($flagged) {
+                    $flags.=', ';
+                }
+                $flags.='amended';
+                $flagged=1;
+            }
+            if ($row['termination']) {
+                if ($flagged) {
+                    $flags.=', ';
+                }
+                $flags.='termination';
+            }
+            $flags.=')';
+        }
+
+        return '<p><a href="' . $row['url'] . '" target="_blank">' . $row['entity'] . '</a>' . ($show_reporttype ? ' - ' . $row['reporttype'] : '') . $flags . '</p>';
+    }
+
+}

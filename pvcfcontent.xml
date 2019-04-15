@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install version="1.5" type="plugin" group="content" method="upgrade">
+    <name>Content - PV CF Content</name>
+    <author>Matt Murphy</author> 
+    <creationDate>2015.09.20</creationDate>
+    <copyright>Copyright (C) 2015 Philadelphia Elections Commission. All rights reserved.</copyright>
+    <license>GNU/GPL http://www.gnu.org/copyleft/gpl.html</license> 
+    <authorEmail>matthew.e.murphy@phila.gov</authorEmail> 
+    <authorUrl>http://www.philadelphiavotes.com</authorUrl> 
+    <version>0.1</version>
+    <description>Takes parameters and builds a . Usage (note capitals needed for "PFCFCONTENT", not following params): [[PVCFCONTENT|YEAR|CYCLE|OFFICE(optional)]].</description>
+    <files>
+        <filename plugin="pvcfcontent">pvcfcontent.php</filename>
+    </files>
+</install>
